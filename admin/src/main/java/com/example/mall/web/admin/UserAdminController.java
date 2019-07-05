@@ -2,6 +2,7 @@ package com.example.mall.web.admin;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.example.mall.comment.ComemtSatues;
 import com.example.mall.comment.CommentResult;
 import com.example.mall.entity.admin.UserAdmin;
 import com.example.mall.service.admin.UserAdminService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,6 +77,20 @@ public class UserAdminController {
     public CommentResult logout() {
         SecurityContextHolder.getContext().setAuthentication(null);
         return CommentResult.success();
+    }
+
+    /**
+     * 账户列表
+     *
+     * @return
+     */
+    @RequestMapping("/list")
+    @ResponseBody
+    public CommentResult list() {
+        Map<String, Object> map = new HashMap<>();
+        List<UserAdmin> userAdmins = userAdminService.selectList(new EntityWrapper<UserAdmin>().eq("state", ComemtSatues.NORMAL.getStatus()));
+        map.put("users", userAdmins);
+        return CommentResult.success(map);
     }
 
 }
