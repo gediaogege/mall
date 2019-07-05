@@ -1,4 +1,4 @@
-package com.example.mall.admin.config;
+package com.example.mall.config;
 
 import com.baomidou.mybatisplus.mapper.ISqlInjector;
 import com.baomidou.mybatisplus.mapper.LogicSqlInjector;

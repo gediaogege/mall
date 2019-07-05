@@ -19,8 +19,8 @@ public class CodeGenerate {
     @Test
     public void generateCod() throws Exception {
         String packageName = "com.example.mall";
-        String moduleName = "admin";
-        generateByTables(packageName, moduleName, "user_admin");
+        String moduleName = "wx";
+        generateByTables(packageName, moduleName, "wx_config");
     }
 
     private void generateByTables(String packageName, String moduleName, String...tableNames) {
@@ -46,8 +46,8 @@ public class CodeGenerate {
                 .setBaseColumnList(true)
                 .setAuthor("qmt")
                 .setOutputDir("F:\\mybatis_plus_code")
-                .setFileOverride(true)
-                .setIdType(AUTO);
+                .setFileOverride(true);
+
         config.setServiceName("%sService");
         return config;
     }

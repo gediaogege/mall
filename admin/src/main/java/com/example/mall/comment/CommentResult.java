@@ -41,9 +41,13 @@ public class CommentResult {
     /**
      * 返回成功
      *
-     * @param data
+     * @param
      * @return
      */
+    public static CommentResult success() {
+        return success(ResultCode.SUCCESS);
+    }
+
     public static CommentResult success(Object data) {
         return new CommentResult(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
     }

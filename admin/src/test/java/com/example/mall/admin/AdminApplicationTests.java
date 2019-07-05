@@ -1,6 +1,7 @@
 package com.example.mall.admin;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.example.mall.entity.admin.PermissionInfo;
 import com.example.mall.entity.admin.UserAdmin;
 import com.example.mall.service.admin.UserAdminService;
 import org.junit.Test;
@@ -22,4 +23,9 @@ public class AdminApplicationTests {
         System.out.println(userAdmins);
     }
 
+	@Test
+	public void name() {
+        List<PermissionInfo> permissionInfo = userAdminService.getUserPermissionByUserName("admin");
+        System.out.println(permissionInfo);
+    }
 }

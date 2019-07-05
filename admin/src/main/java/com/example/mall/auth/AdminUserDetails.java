@@ -1,18 +1,21 @@
 package com.example.mall.auth;
 
+import com.example.mall.entity.admin.PermissionInfo;
 import com.example.mall.entity.admin.UserAdmin;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class AdminUserDetails implements UserDetails {
     private UserAdmin umsAdmin;
-    private List permissionList;
+    private List<PermissionInfo> permissionList;
 
-    public AdminUserDetails(UserAdmin umsAdmin, List permissionList) {
+    public AdminUserDetails(UserAdmin umsAdmin, List<PermissionInfo> permissionList) {
         this.umsAdmin = umsAdmin;
         this.permissionList = permissionList;
     }
@@ -20,7 +23,8 @@ public class AdminUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //返回当前用户的权限
-        return permissionList;
+        return permissionList.stream().filter(permissionInfo -> permissionInfo.getAuthValue() != null).map(permissionInfo ->
+                new SimpleGrantedAuthority(permissionInfo.getAuthValue())).collect(Collectors.toList());
     }
 
     @Override

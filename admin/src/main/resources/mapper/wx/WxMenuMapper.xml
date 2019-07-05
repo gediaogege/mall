@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mall.mapper.wx.WxMenuMapper">
+
+    <!-- 开启二级缓存 -->
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mall.entity.wx.WxMenu">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="wx_menu_name" property="wxMenuName" />
+        <result column="menu_level" property="menuLevel" />
+        <result column="menu_type" property="menuType" />
+        <result column="menu_link" property="menuLink" />
+        <result column="create_time" property="createTime" />
+        <result column="status" property="status" />
+        <result column="remark" property="remark" />
+        <result column="menu_order" property="menuOrder" />
+        <result column="shop_id" property="shopId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, parent_id AS parentId, wx_menu_name AS wxMenuName, menu_level AS menuLevel, menu_type AS menuType, menu_link AS menuLink, create_time AS createTime, status, remark, menu_order AS menuOrder, shop_id AS shopId
+    </sql>
+
+</mapper>
