@@ -106,4 +106,12 @@ public class CommentResult {
     public static CommentResult forbidden(Object data) {
         return new CommentResult(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage(), data);
     }
+
+    /**
+     * 用户已禁用返回结果
+     * @return
+     */
+    public static CommentResult userStatueDisAble(){
+        return new CommentResult(ResultCode.USER_STATUE_DISABLE.getCode(),ResultCode.USER_STATUE_DISABLE.getMessage(),null);
+    }
 }

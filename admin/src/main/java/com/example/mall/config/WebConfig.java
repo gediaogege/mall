@@ -3,10 +3,13 @@ package com.example.mall.config;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.example.mall.auth.AdminUserDetails;
 import com.example.mall.auth.JwtAuthenticationTokenFilter;
+import com.example.mall.comment.ComemtSatues;
 import com.example.mall.entity.admin.UserAdmin;
+import com.example.mall.event.UserStatueDisAbleEvent;
 import com.example.mall.service.admin.UserAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,14 +30,18 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebConfig extends WebSecurityConfigurerAdapter {
+public class WebConfig extends WebSecurityConfigurerAdapter{
     @Resource
     private UserAdminService userAdminService;
-
+    @Autowired
+    private ApplicationContext applicationContext;
+    @Autowired
+    private HttpServletResponse response;
 
     /**
      * 跨域处理
@@ -75,7 +82,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs/**"
                 )
                 .permitAll()
-                .antMatchers("/mall/admin/login", "/mall/admin/register")// 对登录注册要允许匿名访问
+                .antMatchers("/mall/admin/login", "/mall/admin/userStatueDisAble")// 对登录注册要允许匿名访问
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)//跨域请求会先进行一次options请求
                 //.permitAll()
@@ -112,6 +119,9 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
         return username -> {
             UserAdmin userAdmin = userAdminService.selectOne(new EntityWrapper<UserAdmin>().eq("username", username));
             if (userAdmin != null) {
+                if (userAdmin.getState()==ComemtSatues.DISABLE.getStatus()){
+                    applicationContext.publishEvent(new UserStatueDisAbleEvent(response));
+                }
                 return new AdminUserDetails(userAdmin, userAdminService.getUserPermissionByUserName(username));
             }
             throw new UsernameNotFoundException("用户名或密码错误");

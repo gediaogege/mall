@@ -19,11 +19,11 @@ public class GlobalExceptionHandle {
     @ResponseBody
     public CommentResult exceptionHandler(Exception e, HandlerMethod handlerMethod) {
         //处理没有访问权限
+        log.error(e.getMessage(), e);
+        e.printStackTrace();
         if (e instanceof AccessDeniedException) {
             return CommentResult.forbidden(e.getMessage());
         }
-        log.error(e.getMessage());
-        e.printStackTrace();
         return CommentResult.failed();
     }
 }

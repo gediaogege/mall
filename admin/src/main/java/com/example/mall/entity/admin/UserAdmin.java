@@ -26,7 +26,7 @@ public class UserAdmin extends Model<UserAdmin> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id")
     private String id;
 
     private String username;

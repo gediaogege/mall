@@ -7,6 +7,7 @@ import com.example.mall.entity.wx.WxConfig;
 import com.example.mall.mapper.wx.WxConfigMapper;
 import com.example.mall.service.wx.WxConfigService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
@@ -27,6 +28,7 @@ import java.util.Map;
  * @since 2019-07-04
  */
 @Service
+@Transactional
 public class WxConfigServiceImpl extends ServiceImpl<WxConfigMapper, WxConfig> implements WxConfigService {
     public static final String GET_ACCESSTOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
     public static String ACCESSTOKEN;//密钥

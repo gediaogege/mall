@@ -49,4 +49,5 @@ public class WxMenuTest {
         String accessToken = wxConfigService.getAccessToken("1");
         System.out.println(accessToken);
     }
+
 }

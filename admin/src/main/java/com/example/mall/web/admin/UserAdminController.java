@@ -2,9 +2,12 @@ package com.example.mall.web.admin;
 
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.example.mall.comment.ComemtSatues;
 import com.example.mall.comment.CommentResult;
-import com.example.mall.entity.admin.UserAdmin;
+import com.example.mall.entity.admin.*;
+import com.example.mall.pvo.AuthParamVo;
+import com.example.mall.pvo.PermissionQueryVo;
 import com.example.mall.service.admin.UserAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,9 +91,135 @@ public class UserAdminController {
     @ResponseBody
     public CommentResult list() {
         Map<String, Object> map = new HashMap<>();
-        List<UserAdmin> userAdmins = userAdminService.selectList(new EntityWrapper<UserAdmin>().eq("state", ComemtSatues.NORMAL.getStatus()));
-        map.put("users", userAdmins);
+        List<UserAdmin> userAdmins = userAdminService.selectList(new EntityWrapper<UserAdmin>());
+        List<UserAdminExtend> userAdminExtends = userAdminService.userAdminExtend(userAdmins);
+        List<Map<String, String>> sysRoles = userAdminService.getSysRoles();
+        map.put("users", userAdminExtends);
+        map.put("sysRoles", sysRoles);
         return CommentResult.success(map);
     }
+
+    /**
+     * 获取用户已拥有的角色
+     *
+     * @param vo
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getUserRoles")
+    public CommentResult getUserRoles(@RequestBody AuthParamVo vo) {
+        Map<String, Object> map = new HashMap<>();
+        List<String> userRoles = userAdminService.getUserRoles(vo.getUserId());
+        map.put("userRoles", userRoles);
+        return CommentResult.success(map);
+    }
+
+    /**
+     * 保存或更新
+     *
+     * @param vo
+     * @return
+     */
+    @RequestMapping("/saveOrUpdateUser")
+    @ResponseBody
+    public CommentResult saveOrUpdateUser(@RequestBody AuthParamVo vo) {
+        userAdminService.saveOrUpdateUser(vo);
+        return CommentResult.success();
+    }
+
+    /**
+     * 角色列表
+     *
+     * @return
+     */
+    @RequestMapping("/roleList")
+    @ResponseBody
+    public CommentResult roleList() {
+        Map<String, Object> map = new HashMap<>();
+        List<RoleInfo> roleInfos = userAdminService.roleList();
+        List<RoleInfoExtend> roleInfoExtendList = userAdminService.roleInfoExtend(roleInfos);
+        List<Map<String, String>> sysPermission = userAdminService.getSysPermission();
+        map.put("roles", roleInfoExtendList);
+        map.put("sysPermission", sysPermission);
+        return CommentResult.success(map);
+    }
+
+    /**
+     * 获取角色已拥有的权限
+     *
+     * @param vo
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/rolePermissions")
+    public CommentResult rolePermissions(@RequestBody AuthParamVo vo) {
+        Map<String, Object> map = new HashMap<>();
+        List<String> rolePermissions = userAdminService.getPermissionByRoleId(vo.getRoleId());
+        map.put("rolePermissions", rolePermissions);
+        return CommentResult.success(map);
+    }
+
+    /**
+     * 保存更新角色
+     *
+     * @return
+     */
+    @RequestMapping("/saveOrUpdateRole")
+    @ResponseBody
+    public CommentResult saveOrUpdateRole(@RequestBody AuthParamVo vo) {
+        userAdminService.saveOrUpdateRole(vo);
+        return CommentResult.success();
+    }
+
+    /**
+     * 删除角色
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/delRole")
+    public CommentResult delRole(@RequestBody AuthParamVo vo) {
+        userAdminService.delRole(vo.getId());
+        return CommentResult.success();
+    }
+
+    /**
+     * 权限列表
+     *
+     * @return
+     */
+    @RequestMapping("/permissionList")
+    @ResponseBody
+    public CommentResult permissionList(@RequestBody PermissionQueryVo vo) {
+        Map<String, Object> map = new HashMap<>();
+        Page<PermissionInfo> permissionInfoPage = userAdminService.permissionPage(vo);
+        map.put("permissions", permissionInfoPage);
+        return CommentResult.success(map);
+    }
+
+    /**
+     * 保存更新权限
+     *
+     * @return
+     */
+    @RequestMapping("/saveOrUpdatePermission")
+    @ResponseBody
+    public CommentResult saveOrUpdatePermission(@RequestBody AuthParamVo vo) {
+        userAdminService.saveOrUpdatePermission(vo);
+        return CommentResult.success();
+    }
+
+    /**
+     * 删除权限
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/delPermission")
+    public CommentResult delPermission(@RequestBody AuthParamVo vo) {
+        userAdminService.delPermission(vo.getId());
+        return CommentResult.success();
+    }
+
 
 }
