@@ -19,8 +19,8 @@ public class CodeGenerate {
     @Test
     public void generateCod() throws Exception {
         String packageName = "com.example.mall";
-        String moduleName = "wx";
-        generateByTables(packageName, moduleName, "wx_config");
+        String moduleName = "tness";
+        generateByTables(packageName, moduleName, "tness_info");
     }
 
     private void generateByTables(String packageName, String moduleName, String...tableNames) {

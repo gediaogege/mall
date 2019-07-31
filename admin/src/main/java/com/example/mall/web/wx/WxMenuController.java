@@ -8,12 +8,16 @@ import com.example.mall.comment.WxMenuLevel;
 import com.example.mall.entity.wx.WxMenu;
 import com.example.mall.pvo.WxMenuParamVo;
 import com.example.mall.service.wx.WxMenuService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -30,19 +34,17 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("mall/wx")
+@Api(tags = "WxMenuController", description = "微信菜单管理")
 public class WxMenuController {
     @Autowired
     private WxMenuService wxMenuService;
 
-    /**
-     * 获取菜单列表
-     *
-     * @return
-     */
-    @RequestMapping("/menuList")
+
+    @RequestMapping(value = "/menuList", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('wx:menuList')")
-    public CommentResult menuList(@RequestBody WxMenuParamVo vo) {
+    @ApiOperation("获取菜单列表")
+    public CommentResult menuList(@RequestBody  WxMenuParamVo vo) {
         Map<String, Object> map = new HashMap<>();
         List<WxMenu> wxMenus = wxMenuService.getWxMenus(vo.getShopId());
         map.put("wxMenus", wxMenus);
@@ -53,40 +55,28 @@ public class WxMenuController {
         return CommentResult.success(map);
     }
 
-    /**
-     * 保存或更新
-     *
-     * @param wxMenu
-     * @return
-     */
+
     @ResponseBody
-    @RequestMapping("/saveOrUpdateMenu")
+    @RequestMapping(value = "/saveOrUpdateMenu", method = RequestMethod.POST)
+    @ApiOperation("保存或更新")
     public CommentResult saveOrUpdateMenu(@RequestBody WxMenu wxMenu) {
         boolean updateMenu = wxMenuService.saveOrUpdateMenu(wxMenu);
         return CommentResult.success();
     }
 
-    /**
-     * 删除菜单
-     *
-     * @param vo
-     * @return
-     */
-    @RequestMapping("/delMenu")
+
+    @ApiOperation("删除菜单")
+    @RequestMapping(value = "/delMenu", method = RequestMethod.POST)
     @ResponseBody
     public CommentResult delMenu(@RequestBody WxMenuParamVo vo) {
         boolean delMenu = wxMenuService.delMenu(vo.getId());
         return CommentResult.success();
     }
 
-    /**
-     * 发布微信菜单
-     *
-     * @param vo
-     * @return
-     */
-    @RequestMapping("/createWxMenu")
+
+    @RequestMapping(value = "/createWxMenu", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation("发布微信菜单")
     public CommentResult createWxMenu(@RequestBody WxMenuParamVo vo) {
         wxMenuService.createWxMenu(vo.getShopId());
         return CommentResult.success();

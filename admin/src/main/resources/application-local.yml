@@ -13,7 +13,15 @@ spring:
       stat-view-servlet: #访问监控网页的登录用户名和密码
         login-username: druid
         login-password: druid
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+      cluster-nodes: 127.0.0.1:9300
 logging:
   level:
     root: info
   file: logs
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*/*Mapper.xml

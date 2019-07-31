@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mall.mapper.cos.CosInfoMapper">
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mall.entity.cos.CosInfo">
+        <id column="id" property="id" />
+        <result column="backet_name" property="backetName" />
+        <result column="key" property="key" />
+        <result column="url" property="url" />
+        <result column="relate_id" property="relateId" />
+        <result column="status" property="status" />
+        <result column="relate_type" property="relateType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, backet_name AS backetName, key, url, relate_id AS relateId, status, relate_type AS relateType
+    </sql>
+
+</mapper>

@@ -9,6 +9,8 @@ import com.example.mall.entity.admin.*;
 import com.example.mall.pvo.AuthParamVo;
 import com.example.mall.pvo.PermissionQueryVo;
 import com.example.mall.service.admin.UserAdminService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +36,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("mall/admin")
 @Slf4j
+@Api(tags ="UserAdminController",description = "后台用户管理")
 public class UserAdminController {
     @Autowired
     private UserAdminService userAdminService;
@@ -46,7 +49,8 @@ public class UserAdminController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @ApiOperation("用户登录返回token")
     public CommentResult login(@RequestBody UserAdmin userAdmin) {//post请求
         log.info("用户开始登录。。。,登录用户：{}", userAdmin.getUsername());
         Map<String, Object> map = new HashMap<>(2);
@@ -62,6 +66,7 @@ public class UserAdminController {
      *
      * @return
      */
+    @ApiOperation("获取登录用户的信息")
     @ResponseBody
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public CommentResult info() {
@@ -87,7 +92,8 @@ public class UserAdminController {
      *
      * @return
      */
-    @RequestMapping("/list")
+    @ApiOperation("用户列表")
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
     @ResponseBody
     public CommentResult list() {
         Map<String, Object> map = new HashMap<>();
@@ -105,8 +111,9 @@ public class UserAdminController {
      * @param vo
      * @return
      */
+    @ApiOperation("获取用户已拥有的角色")
     @ResponseBody
-    @RequestMapping("/getUserRoles")
+    @RequestMapping(value = "/getUserRoles",method = RequestMethod.POST)
     public CommentResult getUserRoles(@RequestBody AuthParamVo vo) {
         Map<String, Object> map = new HashMap<>();
         List<String> userRoles = userAdminService.getUserRoles(vo.getUserId());
@@ -114,25 +121,18 @@ public class UserAdminController {
         return CommentResult.success(map);
     }
 
-    /**
-     * 保存或更新
-     *
-     * @param vo
-     * @return
-     */
-    @RequestMapping("/saveOrUpdateUser")
+
+    @ApiOperation("保存或更新")
+    @RequestMapping(value = "/saveOrUpdateUser",method = RequestMethod.POST)
     @ResponseBody
     public CommentResult saveOrUpdateUser(@RequestBody AuthParamVo vo) {
         userAdminService.saveOrUpdateUser(vo);
         return CommentResult.success();
     }
 
-    /**
-     * 角色列表
-     *
-     * @return
-     */
-    @RequestMapping("/roleList")
+
+    @ApiOperation("角色列表")
+    @RequestMapping(value = "/roleList",method = RequestMethod.POST)
     @ResponseBody
     public CommentResult roleList() {
         Map<String, Object> map = new HashMap<>();
@@ -144,14 +144,10 @@ public class UserAdminController {
         return CommentResult.success(map);
     }
 
-    /**
-     * 获取角色已拥有的权限
-     *
-     * @param vo
-     * @return
-     */
+
+    @ApiOperation("获取角色已拥有的权限")
     @ResponseBody
-    @RequestMapping("/rolePermissions")
+    @RequestMapping(value = "/rolePermissions",method = RequestMethod.POST)
     public CommentResult rolePermissions(@RequestBody AuthParamVo vo) {
         Map<String, Object> map = new HashMap<>();
         List<String> rolePermissions = userAdminService.getPermissionByRoleId(vo.getRoleId());
@@ -159,36 +155,26 @@ public class UserAdminController {
         return CommentResult.success(map);
     }
 
-    /**
-     * 保存更新角色
-     *
-     * @return
-     */
-    @RequestMapping("/saveOrUpdateRole")
+
+    @ApiOperation("保存更新角色")
+    @RequestMapping(value = "/saveOrUpdateRole",method = RequestMethod.POST)
     @ResponseBody
     public CommentResult saveOrUpdateRole(@RequestBody AuthParamVo vo) {
         userAdminService.saveOrUpdateRole(vo);
         return CommentResult.success();
     }
 
-    /**
-     * 删除角色
-     *
-     * @return
-     */
+
+    @ApiOperation("删除角色")
     @ResponseBody
-    @RequestMapping("/delRole")
+    @RequestMapping(value = "/delRole",method = RequestMethod.POST)
     public CommentResult delRole(@RequestBody AuthParamVo vo) {
         userAdminService.delRole(vo.getId());
         return CommentResult.success();
     }
 
-    /**
-     * 权限列表
-     *
-     * @return
-     */
-    @RequestMapping("/permissionList")
+    @ApiOperation("权限列表")
+    @RequestMapping(value = "/permissionList",method = RequestMethod.POST)
     @ResponseBody
     public CommentResult permissionList(@RequestBody PermissionQueryVo vo) {
         Map<String, Object> map = new HashMap<>();
@@ -197,25 +183,19 @@ public class UserAdminController {
         return CommentResult.success(map);
     }
 
-    /**
-     * 保存更新权限
-     *
-     * @return
-     */
-    @RequestMapping("/saveOrUpdatePermission")
+
+    @ApiOperation("保存更新权限")
+    @RequestMapping(value = "/saveOrUpdatePermission",method = RequestMethod.POST)
     @ResponseBody
     public CommentResult saveOrUpdatePermission(@RequestBody AuthParamVo vo) {
         userAdminService.saveOrUpdatePermission(vo);
         return CommentResult.success();
     }
 
-    /**
-     * 删除权限
-     *
-     * @return
-     */
+
+    @ApiOperation("删除权限")
     @ResponseBody
-    @RequestMapping("/delPermission")
+    @RequestMapping(value = "/delPermission",method = RequestMethod.POST)
     public CommentResult delPermission(@RequestBody AuthParamVo vo) {
         userAdminService.delPermission(vo.getId());
         return CommentResult.success();

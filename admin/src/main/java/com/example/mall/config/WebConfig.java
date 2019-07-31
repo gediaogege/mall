@@ -82,7 +82,8 @@ public class WebConfig extends WebSecurityConfigurerAdapter{
                         "/v2/api-docs/**"
                 )
                 .permitAll()
-                .antMatchers("/mall/admin/login", "/mall/admin/userStatueDisAble")// 对登录注册要允许匿名访问
+                // 对登录注册要允许匿名访问
+                .antMatchers("/mall/admin/login", "/mall/cos/upload")
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)//跨域请求会先进行一次options请求
                 //.permitAll()

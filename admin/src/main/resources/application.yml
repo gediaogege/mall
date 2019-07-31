@@ -12,3 +12,16 @@ jwt:
 
 
 
+mail:
+  pass: ioiovjebgwvghdjf
+  host: smtp.qq.com
+  port: 25
+  from: 1181639720@qq.com
+  user: 1181639720
+
+cos:
+  appid: 1257281765
+  secretid: AKIDY1IOJ2Jv78xlZEb1KSPBmCQTM3ZxlC3j
+  secretkey: f9RYTEhz51mLo6EAvVt67xcaNzRhmfNw
+  buckertname: gediao-1257281765
+  prefix: mall-admin

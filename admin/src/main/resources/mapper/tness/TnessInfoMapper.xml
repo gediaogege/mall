@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mall.mapper.tness.TnessInfoMapper">
+
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mall.entity.tness.TnessInfo">
+        <id column="id" property="id" />
+        <result column="tness_type" property="tnessType" />
+        <result column="calorie" property="calorie" />
+        <result column="duration" property="duration" />
+        <result column="range" property="range" />
+        <result column="source" property="source" />
+        <result column="user_id" property="userId" />
+        <result column="nickname" property="nickname" />
+        <result column="sex" property="sex" />
+        <result column="duration_time" property="durationTime" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, tness_type AS tnessType, calorie, duration, range, source, user_id AS userId, nickname, sex, duration_time AS durationTime, remark, create_time AS createTime
+    </sql>
+
+
+    <!--自定义sql查询-->
+    <resultMap id="myBaseResultMap" type="com.example.mall.rvo.TnessResultVo">
+        <id column="id" property="id" />
+        <result column="total_range" property="totalRange" />
+        <result column="total_duration" property="totalDuration" />
+        <result column="total_calorie" property="totalCalorie" />
+        <result column="remark" property="dateTime" />
+    </resultMap>
+    <sql id="query_where">
+        <where>
+            <if test="startDate!=null">
+                AND duration_time &gt;= #{startDate}
+            </if>
+            <if test="endDate!=null">
+                AND duration_time &lt;= #{endDate}
+            </if>
+        </where>
+    </sql>
+    <select id="getTnessDataByDate" resultMap="myBaseResultMap">
+        SELECT sum(`range`) as total_range,sum(duration) as total_duration, sum(calorie) as total_calorie,remark from tness_info
+        <include refid="query_where"></include>
+        GROUP BY remark
+    </select>
+</mapper>
